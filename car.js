@@ -11,17 +11,17 @@ class Car {
   #mileage = 0;
 
   constructor(brand, model, yearOfManufacturing, maxSpeed, maxFuelVolume, fuelConsumption) {
-    if (isValidString(brand)) throw new Error(`parameter ${brand} typeof ${typeof brand} is not string or length < 1 or > 50`);
-    if (isValidString(model)) throw new Error(`parameter ${model} typeof ${typeof model} is not string or length < 1 or > 50`);    
-    if (isValidYear(yearOfManufacturing)) throw new Error(`Error`);    
-    if (isValidMaxSpeed(maxSpeed)) throw new Error(`Error`);    
-    if (isValidMaxFuelVolume(maxFuelVolume)) throw new Error(`Error`);    
-    if (isValidFuelConsumption(fuelConsumption)) throw new Error(`Error`);    
+    if (isValidString(brand)) throw new Error(`model invalid range or value type`);
+    if (isValidString(model)) throw new Error(`brand invalid range or value type`);  
+    if (isValidYear(yearOfManufacturing)) throw new Error(`yearOfManufacturing invalid range or value type`);    
+    if (isValidMaxSpeed(maxSpeed)) throw new Error(`maxSpeed invalid range or value type`);    
+    if (isValidMaxFuelVolume(maxFuelVolume)) throw new Error(`maxFuelVolume invalid range or value type`);    
+    if (isValidFuelConsumption(fuelConsumption)) throw new Error(`fuelConsumption invalid range or value type`);   
     this.#brand = brand;
     this.#model = model;
     this.#yearOfManufacturing = yearOfManufacturing;
     this.#maxSpeed = maxSpeed;
-    this.#maxFuelVolume = maxFuelVolume;`` 
+    this.#maxFuelVolume = maxFuelVolume;
     this.#fuelConsumption = fuelConsumption; 
   }
 
@@ -31,7 +31,7 @@ class Car {
 
   set brand(value) {
     if (isValidString(value)) {
-      throw new Error(`brand typeof ${typeof value} is not string or length < 1 or > 50`);
+      throw new Error(`brand invalid range or value type`);
     }
     this.#brand = value;
   }
@@ -42,7 +42,7 @@ class Car {
 
   set model(value) {
     if (isValidString(value)) {
-      throw new Error(`model typeof ${typeof value} is not string or length < 1 or > 50`);
+      throw new Error(`model invalid range or value type`);
     }
       this.#model = value;
   }
@@ -53,7 +53,7 @@ class Car {
 
   set yearOfManufacturing(value) {
     if (isValidYear(value)) {
-      throw new Error(`typeof ${typeof value}`);
+      throw new Error(`yearOfManufacturing invalid range or value type`);
     }
     this.#yearOfManufacturing = value;
   }
@@ -64,7 +64,7 @@ class Car {
 
   set maxSpeed(value) {
     if (isValidMaxSpeed(value)) {
-      throw new Error(`typeof ${typeof value}`);
+      throw new Error(`maxSpeed invalid range or value type`);
     }
     this.#maxSpeed = value;
   }
@@ -75,7 +75,7 @@ class Car {
   
   set maxFuelVolume(value) {
     if (isValidMaxFuelVolume(value)) {
-      throw new Error(`typeof ${typeof value} maxFuelVolume`);
+      throw new Error(`maxFuelVolume invalid range or value type`);
     }
     this.#maxFuelVolume = value;
   }
@@ -86,7 +86,7 @@ class Car {
 
   set fuelConsumption(value) {
     if (isValidFuelConsumption(value)) {
-      throw new Error(`typeof ${typeof value}`);
+      throw new Error(`fuelConsumption invalid range or value type`);
     }
     this.#fuelConsumption = value;
   }
@@ -104,32 +104,28 @@ class Car {
   }
 
   start() {
-    if (this.#isStarted) {
-      throw new Error("Машина уже заведена");
-    }else {
-      this.#isStarted = true;
-    }
+    if (this.#isStarted) throw new Error("Машина уже заведена");   
+       this.#isStarted = true; 
   }
 
   shutDownEngine() {
-    if (!this.#isStarted) {
-      throw new Error("Машина ещё не заведена");
-    }else {
+    if (!this.#isStarted)throw new Error("Машина ещё не заведена");
       this.#isStarted = true;
-    }
   }
 
-  fillUpGasTank(gas) {
-    if (!isValidNumber(gas)) {
-      throw new Error("Неверное количество топлива для заправки 1");
+  fillUpGasTank(fuel) {
+    if (!isValidNumber(fuel)) {
+      throw new Error("Неверное количество топлива для заправки");
     }
-    if (isValidRang(gas)) {
-      throw new Error("Неверное количество топлива для заправки 2");
+    if (isValidRang(fuel)) {
+      throw new Error("Неверное количество топлива для заправки");
     }
-    if (gas > 20 || this.#currentFuelVolume > 20) {
+      this.#currentFuelVolume += fuel;
+    
+    if (this.#currentFuelVolume > 20) {
       throw new Error("Топливный бак переполнен");
     }
-    this.#currentFuelVolume += gas;
+
   }
 
   drive(speed, hours) {
@@ -149,13 +145,12 @@ class Car {
     if (this.#currentFuelVolume < 5){
       throw new Error("Недостаточно топлива");
     }else {
-      let distance = speed * hours;
-      let v = distance * this.#fuelConsumption / 100;
-      this.#currentFuelVolume -= v;
-      this.#mileage += distance;
+      let distanceTraveled = speed * hours;
+      let requiredFuel = distanceTraveled * this.#fuelConsumption / 100;
+      this.#currentFuelVolume -= requiredFuel;
+      this.#mileage += distanceTraveled;
     }
   }
-
 }
 
 function isValidRang(rang) {
